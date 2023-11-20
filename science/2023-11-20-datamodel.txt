@@ -1,0 +1,62 @@
+Data model
+-------------------------------------------------------------------------------
+
+Entities
+
+- Event: something that happens somewhere, there are some activities performed, and there are some participants.
+- Person: a person with name identified by email.
+
+-------------------------------------------------------------------------------
+
+01 Minimal data model
+
+Event
++ id: Int32
++ owner: String
++ title: String
++ description: String
++ createdAt: DateTime
++ startsAt: DateTime
++ endsAt: DateTime
+
+Person
++ email: String
++ name: String
++ bio: String
++ password: String
++ createdAt: DateTime
+
+-------------------------------------------------------------------------------
+
+02 Slightly advanced data model
+
+Person
++ email: String              // Primary key
++ name: String
++ bio: String
++ password: String
++ createdAt: DateTime
+
+Event 
++ id: Int32                  // Primary key
++ owner: String              // Foreign key (Person.email)
++ title: String
++ description: String
++ requirements: String
++ location: String
++ isPublic: Boolean          // Indicates if everyone is welcome
++ createdAt: DateTime
++ startsAt: DateTime
++ endsAt: DateTime
+
+EventVisit
++ eventId: Int32             // Primary&Foreign key (Event.id)
++ person: String             // Primary&Foreign key (Person.email)
++ motivation: String
++ createdAt: DateTime
++ isApproved: Boolean
++ isVisited: Boolean
+
+EventTag
++ eventId: Int32             // Primary&Foreign key (Event.id)
++ tag: String                // Primary key
