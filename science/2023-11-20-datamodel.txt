@@ -1,62 +1,62 @@
 Data model
--------------------------------------------------------------------------------
 
-Entities
-
-- Event: something that happens somewhere, there are some activities performed, and there are some participants.
-- Person: a person with name identified by email.
-
--------------------------------------------------------------------------------
-
-01 Minimal data model
-
-Event
-+ id: Int32
-+ owner: String
-+ title: String
-+ description: String
-+ createdAt: DateTime
-+ startsAt: DateTime
-+ endsAt: DateTime
-
-Person
-+ email: String
-+ name: String
-+ bio: String
-+ password: String
-+ createdAt: DateTime
-
--------------------------------------------------------------------------------
-
-02 Slightly advanced data model
-
-Person
+[1][P] Person
 + email: String              // Primary key
-+ name: String
-+ bio: String
-+ password: String
-+ createdAt: DateTime
++ name: String               // Name (Surname, etc)
++ bio: String                // Short biography
++ password: String           // Password
++ createdAt: DateTime        // When signed up
 
-Event 
+[2][1:M] Session
++ email: String              // Primary&Foreign key (Person.email)
++ key: Int32                 // Primary key
++ password1: String          // Password #1 set to old password #2
++ password2: String          // Password #2 refreshed at given time
++ expiresAt: String          // When should be refreshed?
+
+[3][1:M] PersonTag
++ email: String              // Primary&Foreign key (Person.email)
++ tag: String                // Primary key 
+
+[4][P] Event 
 + id: Int32                  // Primary key
 + owner: String              // Foreign key (Person.email)
-+ title: String
-+ description: String
-+ requirements: String
-+ location: String
++ title: String              // Name of this event
++ description: String        // Description of this event
++ requirements: String       // Visitor requirements
++ location: String           // Where? Real world address or URL
 + isPublic: Boolean          // Indicates if everyone is welcome
-+ createdAt: DateTime
-+ startsAt: DateTime
-+ endsAt: DateTime
++ createdAt: DateTime        // When created
++ startsAt: DateTime         // When starts
++ endsAt: DateTime           // When ends
 
-EventVisit
+[5][M:M] EventVisit
 + eventId: Int32             // Primary&Foreign key (Event.id)
 + person: String             // Primary&Foreign key (Person.email)
-+ motivation: String
-+ createdAt: DateTime
-+ isApproved: Boolean
-+ isVisited: Boolean
++ motivation: String         // Describe why person should be let in
++ createdAt: DateTime        // When submitted
++ isApproved: Boolean        // Is it approved by event host/owner?
++ isVisited: Boolean         // Was it actually visited?
 
-EventTag
+[6][1:M] EventTag
 + eventId: Int32             // Primary&Foreign key (Event.id)
 + tag: String                // Primary key
+
+[7][M:M] EventNotification
++ eventId: Int32             // Primary&Foreign key (Event.id)
++ recieverEmail: Int32       // Primary&Foreign key (Person.email)
++ notifyStartAt: DateTime    // When to start notifying
++ notifyInterval: Int32      // How many seconds to wait before next attempt
++ notifyAttempts: Int32      // How many notification attempts?
++ isSuccess: Boolean         // Are we done with notifications?
+
+-------------------------------------------------------------------------------
+
+Relations
+
+[1 Person : M Session] One Person has many Sessions
+[1 Person : M Event] One Person hosts many Events
+[M Person : M Event] Many Persons visit many Events
+[M Person : M Event] Many Persons have many Event notifications
+[1 Event : M EventTag] One Event has many Event tags
+[1 Person : M PersonTag] One person is interested in many Tags
