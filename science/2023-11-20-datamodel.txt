@@ -1,26 +1,26 @@
 Data model
 
 [1][P] Person
-+ email: String              // Primary key
++ id: Int32                  // Primary key
++ email: String              // Unique index
 + name: String               // Name (Surname, etc)
-+ bio: String                // Short biography
-+ password: String           // Password
++ biography: String          // Short biography
++ password: String           // Password hash
 + createdAt: DateTime        // When signed up
 
-[2][1:M] Session
-+ email: String              // Primary&Foreign key (Person.email)
-+ key: Int32                 // Primary key
-+ password1: String          // Password #1 set to old password #2
-+ password2: String          // Password #2 refreshed at given time
+[2][1:M] UserSession
++ id: Int32                  // Primary key
++ personId: Int32            // Foreign key (Person.id)
++ password: String           // Random password
 + expiresAt: String          // When should be refreshed?
 
 [3][1:M] PersonTag
-+ email: String              // Primary&Foreign key (Person.email)
++ personId: Int32            // Primary&Foreign key (Person.id)
 + tag: String                // Primary key 
 
 [4][P] Event 
 + id: Int32                  // Primary key
-+ owner: String              // Foreign key (Person.email)
++ ownerId: Int32             // Foreign key (Person.id)
 + title: String              // Name of this event
 + description: String        // Description of this event
 + requirements: String       // Visitor requirements
@@ -32,7 +32,7 @@ Data model
 
 [5][M:M] EventVisit
 + eventId: Int32             // Primary&Foreign key (Event.id)
-+ person: String             // Primary&Foreign key (Person.email)
++ personId: Int32            // Primary&Foreign key (Person.id)
 + motivation: String         // Describe why person should be let in
 + createdAt: DateTime        // When submitted
 + isApproved: Boolean        // Is it approved by event host/owner?
@@ -44,10 +44,11 @@ Data model
 
 [7][M:M] EventNotification
 + eventId: Int32             // Primary&Foreign key (Event.id)
-+ recieverEmail: Int32       // Primary&Foreign key (Person.email)
-+ notifyStartAt: DateTime    // When to start notifying
-+ notifyInterval: Int32      // How many seconds to wait before next attempt
-+ notifyAttempts: Int32      // How many notification attempts?
++ recieverId: Int32          // Primary&Foreign key (Person.id)
++ createdAt: DateTime        // When created
++ notifyAt: DateTime         // When to notify
++ interval: Int32            // How many seconds to wait before next attempt
++ attempts: Int32            // How many notification attempts?
 + isSuccess: Boolean         // Are we done with notifications?
 
 -------------------------------------------------------------------------------
