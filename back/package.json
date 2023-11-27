@@ -1,0 +1,24 @@
+{
+    "name": "events-backend",
+    "author": "Dmitriy Naumov",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "dependencies": {
+        "better-obj": "file:lib/better-obj",
+        "database": "file:lib/database",
+        "dotenv": "^16.3.1",
+        "knex": "^3.0.1",
+        "models": "file:lib/models",
+        "objection": "^3.1.2",
+        "pg": "^8.11.3",
+        "seeding": "file:src/seeding",
+        "webapi": "file:src/webapi"
+    },
+    "scripts": {
+        "create-db": "node ./task/createDb.js",
+        "drop-db": "node ./task/dropDb.js",
+        "seed-db": "node ./task/seedDb.js",
+        "serve": "node ./task/serve.js "
+    }
+}
