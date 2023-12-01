@@ -1,7 +1,7 @@
 import { DbAdapter } from "better-obj"
 
 import { 
-    Person, PersonTag, UserSession, 
+    Person, PersonTag, UserSession, Calendar,
     Event, EventTag, EventVisit, EventNotification 
 } from "models"
 
@@ -11,6 +11,7 @@ class EventsDbAdapter extends DbAdapter
         super({
             // models must be supplied in the right order 
             // to avoid dependency issues
+            calendar: Calendar,
             person: Person,
             personTag: PersonTag, 
             userSession: UserSession,

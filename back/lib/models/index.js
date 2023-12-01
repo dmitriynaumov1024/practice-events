@@ -2,6 +2,7 @@
 // models
 // 
 
+export { Calendar } from "./Calendar.js"
 export { UserSession } from "./UserSession.js"
 export { Person } from "./Person.js"
 export { PersonTag } from "./PersonTag.js"

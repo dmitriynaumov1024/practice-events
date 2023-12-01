@@ -22,7 +22,11 @@ export class Person extends Model
             biography: {
                 type: type.String,
                 rules: [ max(160) ]
-            }, 
+            },
+            isPublic: {
+                type: type.Boolean,
+                rules: [ ]
+            },
             password: {
                 type: type.String,
                 rules: [ max(255) ]
