@@ -1,4 +1,4 @@
-function seedEventNotification (db) {
+async function seedEventNotification (db) {
     console.log("[i]: Seeding EventNotification")
 }
 

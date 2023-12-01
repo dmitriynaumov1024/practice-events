@@ -1,4 +1,4 @@
-function seedEventWithTag (db) {
+async function seedEventWithTag (db) {
     console.log("[i]: Seeding Event")
     console.log("[i]: Seeding EventTag")
 }
