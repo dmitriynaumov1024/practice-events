@@ -49,7 +49,7 @@ Data model
 + personId: Int32           // Primary&Foreign key (Person.id)
 + createdAt: DateTime       // When created
 + notifyAt: DateTime        // When to notify
-+ interval: Int32           // How many seconds to wait before next attempt
++ interval: Int32           // How many ms to wait before next attempt
 + attempts: Int32           // How many notification attempts?
 + isSuccess: Boolean        // Are we done with notifications?
 
