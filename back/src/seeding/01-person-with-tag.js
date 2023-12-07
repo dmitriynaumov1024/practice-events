@@ -1,4 +1,5 @@
 import { Random } from "./utils.js"
+import { hash } from "better-obj"
 
 let names = [
     "Alice", "Benjamin", "Charlotte", "Daniel", "Emma", "Finn", "Grace", 
@@ -33,6 +34,8 @@ async function seedPersonWithTag (db) {
             isPublic = Random.probability(0.8),
             password = Random.array(7, 19, ()=> Random.choice(passwordChars)).join(""),
             createdAt = startDate
+        console.log(`[Person]  email=${email}  password=${password}`)
+        password = hash(password)
         return {
             name, 
             email,

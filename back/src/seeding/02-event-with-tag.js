@@ -47,7 +47,7 @@ async function seedEventWithTag (db) {
 
     console.log("[i]: Seeding EventTag")
     for (let i in events) {
-        events[i].tags = [...new Set(Random.array(2, 3, ()=>Random.choice(tags)))].map(tag => ({
+        events[i].tags = ["all", ...new Set(Random.array(2, 3, ()=>Random.choice(tags)))].map(tag => ({
             eventId: events[i].id,
             tag: tag
         }))
