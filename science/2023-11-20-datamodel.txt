@@ -17,7 +17,7 @@ Data model
 + id: Int32                 // Primary key
 + personId: Int32           // Foreign key (Person.id)
 + password: String          // Random password
-+ expiresAt: String         // When should be refreshed?
++ expiresAt: DateTime       // When should be refreshed?
 
 [4][1:M] Event 
 + id: Int32                 // Primary key
