@@ -7,3 +7,4 @@ export { constraint, fk, pk, increment, unique, regex, min, max } from "./constr
 export { belongsToOne, hasOne, hasMany } from "./relation.js"
 export { Model } from "./model.js"
 export { DbAdapter, createDbAdapter } from "./database.js"
+export { paginate, hash, randomHash, offsetDate } from "./utils.js"
