@@ -152,6 +152,9 @@ class Model extends ObjectionModel
             let target = options.rule.target
             col = col.references(target.field(target._idcolumn[0]))
         }
+        if (options.rule.onDelete) {
+            col = col.onDelete(options.rule.onDelete)
+        }
     }
 
     // define a model, e.g. create anonymous class

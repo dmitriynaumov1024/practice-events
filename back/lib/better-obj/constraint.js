@@ -19,6 +19,18 @@ function fk (model) {
     }
 }
 
+function cascade () {
+    return {
+        onDelete: "cascade"
+    }
+}
+
+function restrict () {
+    return {
+        onDelete: "restrict"
+    }
+}
+
 function increment () {
     return {
         increment: true
@@ -50,11 +62,11 @@ function regex (pattern) {
 }
 
 const constraint = {
-    pk, fk, increment, unique, min, max, regex
+    pk, fk, cascade, restrict, increment, unique, min, max, regex
 }
 
 export {
     constraint,
-    pk, fk, increment, unique, min, max, regex
+    pk, fk, cascade, restrict, increment, unique, min, max, regex
 }
 
