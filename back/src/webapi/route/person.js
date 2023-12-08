@@ -108,6 +108,12 @@ async function update (request, response) {
     }
 
     let input = request.body.person
+    if (!input) {
+        return response.status(400).json({
+            success: false,
+            badRequest: true
+        })
+    }
     input.tags = input.tags.map(item => ({
         personId: item.personId ?? id,
         tag: (item.tag ?? item).toLowerCase()
@@ -123,7 +129,11 @@ async function update (request, response) {
     person.name = input.name
     person.isPublic = !!input.isPublic
     person.biography = input.biography || ""
-    if (input.password) person.password = hash(input.password)
+    if (input.password?.length) {
+        if (person.password == hash(input.oldPassword ?? "")) {
+            person.password = hash(input.password)
+        }
+    }
     person.tags = input.tags
 
     try {
