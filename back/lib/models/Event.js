@@ -1,5 +1,5 @@
 import { Model, type } from "better-obj"
-import { pk, fk, increment, unique, max, belongsToOne, hasMany } from "better-obj"
+import { pk, fk, cascade, restrict, increment, unique, max, belongsToOne, hasMany } from "better-obj"
 
 import { Calendar } from "./Calendar.js"
 import { Person } from "./Person.js"
@@ -15,11 +15,11 @@ export class Event extends Model
             },
             ownerId: {
                 type: type.Integer,
-                rules: [ fk(Person) ]
+                rules: [ fk(Person), cascade() ]
             },
             calendarDay: {
                 type: type.Integer,
-                rules: [ fk(Calendar) ]
+                rules: [ fk(Calendar), restrict() ]
             },
             title: {
                 type: type.String,

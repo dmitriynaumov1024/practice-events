@@ -1,5 +1,5 @@
 import { Model, type } from "better-obj"
-import { pk, fk, max } from "better-obj"
+import { pk, fk, cascade, max } from "better-obj"
 
 import { Person } from "./Person.js"
 
@@ -9,7 +9,7 @@ export class PersonTag extends Model
         return {
             personId: {
                 type: type.Integer,
-                rules: [ pk(), fk(Person) ]
+                rules: [ pk(), fk(Person), cascade() ]
             },
             tag: {
                 type: type.String,

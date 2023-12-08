@@ -1,5 +1,5 @@
 import { Model, type } from "better-obj"
-import { pk, fk, max, belongsToOne } from "better-obj"
+import { pk, fk, cascade, max, belongsToOne } from "better-obj"
 
 import { Person } from "./Person.js"
 import { Event } from "./Event.js"
@@ -10,11 +10,11 @@ export class EventVisit extends Model
         return {
             personId: {
                 type: type.Integer,
-                rules: [ pk(), fk(Person) ]
+                rules: [ pk(), fk(Person), cascade() ]
             },
             eventId: {
                 type: type.Integer,
-                rules: [ pk(), fk(Event) ]
+                rules: [ pk(), fk(Event), cascade() ]
             },
             motivation: {
                 type: type.String,
