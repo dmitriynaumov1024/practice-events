@@ -1,5 +1,5 @@
 import { Router } from "better-express"
-import { paginate, offsetDate } from "better-obj"
+import { paginate, count, offsetDate } from "better-obj"
 
 const pageSize = 10
 
@@ -28,6 +28,7 @@ async function view (request, response) {
             .first()
 
     if (canSeeAll) {
+        event.visitCount = await count(()=> db.eventVisit.query().where("eventId", id))
         return response.status(200).json({
             event: event,
             success: true
@@ -128,14 +129,14 @@ async function update (request, response) {
     }
     let id = Number(request.query.id)
     let input = request.body.event
-    if (!input) {
+    if (!id || !input) {
         return response.status(400).json({
             success: false,
             badRequest: true
         })
     }
     input.tags = input.tags.map(item => ({
-        eventId: item.eventId ?? id,
+        eventId: id,
         tag: (item.tag ?? item).toLowerCase()
     }))
 

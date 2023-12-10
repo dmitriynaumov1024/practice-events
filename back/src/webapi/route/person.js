@@ -99,6 +99,13 @@ function diffTags (oldTags, newTags) {
 async function update (request, response) {
     let { user, db, logger } = request
     let id = Number(request.query.id)
+    let input = request.body.person
+    if (!id || !input) {
+        return response.status(400).json({
+            success: false,
+            badRequest: true
+        })
+    }
     if (id != user.personId) {
         return response.status(401).json({
             unauthorized: true,
@@ -106,16 +113,8 @@ async function update (request, response) {
             message: "Unauthorized"
         })
     }
-
-    let input = request.body.person
-    if (!input) {
-        return response.status(400).json({
-            success: false,
-            badRequest: true
-        })
-    }
     input.tags = input.tags.map(item => ({
-        personId: item.personId ?? id,
+        personId: id,
         tag: (item.tag ?? item).toLowerCase()
     }))
 
