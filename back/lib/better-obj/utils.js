@@ -32,9 +32,21 @@ function offsetDate (...args) {
     }
 }
 
+function inRange (number, min, max) {
+    return number >= min && number <= max
+}
+
+function clamp (number, min, max) {
+    if (number > max) return max
+    else if (number < min) return min
+    else return number
+}
+
 export {
     paginate,
     hash,
     randomHash,
-    offsetDate
+    offsetDate,
+    inRange,
+    clamp
 }

@@ -1,4 +1,7 @@
 import { Router } from "better-express"
+import { paginate } from "better-obj"
+
+const pageSize = 10
 
 async function view (request, response) {
     let { db, logger, user, query } = request
