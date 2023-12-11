@@ -17,7 +17,8 @@
         "pg": "^8.11.3",
         "qs": "^6.11.2",
         "seeding": "file:src/seeding",
-        "webapi": "file:src/webapi"
+        "webapi": "file:src/webapi",
+        "workers": "file:src/workers"
     },
     "scripts": {
         "create-db": "node ./task/createDb.js",

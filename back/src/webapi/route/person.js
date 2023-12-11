@@ -78,6 +78,12 @@ async function create (request, response) {
         })
     }
     catch (error) {
+        if (error.stack.startsWith("UniqueViolationError")) {
+            return response.status(409).json({
+                success: false,
+                exists: true
+            })
+        }
         logger.error(error.stack)
         return response.status(400).json({
             success: false,
