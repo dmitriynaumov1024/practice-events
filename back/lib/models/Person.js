@@ -29,7 +29,7 @@ export class Person extends Model
             },
             password: {
                 type: type.String,
-                rules: [ max(255) ]
+                rules: [ max(256) ]
             },
             createdAt: {
                 type: type.DateTime,

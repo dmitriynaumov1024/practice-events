@@ -19,43 +19,49 @@ import { eventNotify } from "./route/eventNotify.js"
 import { calendar } from "./route/calendar.js"
 import { tag } from "./route/tag.js"
 
-// create base services
-let logger = new ConsoleLogger()
-let dbAdapter = new EventsDbAdapter()
-await dbAdapter.connect(Knex.parseEnv())
+class EventsWebApi extends Application 
+{
+    constructor() {
+        // base constructor
+        super()
+    }
 
-// create application
-let application = new Application()
+    async start() {
+        // create base services
+        this.logger = new ConsoleLogger()
+        this.dbAdapter = new EventsDbAdapter()
+        await this.dbAdapter.connect(Knex.parseEnv())
 
-// provide base services
-application.use(loggerProvider(()=> logger))
-application.use(dbProvider(()=> dbAdapter))
+        // provide base services
+        this.use(loggerProvider(()=> this.logger))
+        this.use(dbProvider(()=> this.dbAdapter))
 
-// use middlewares
-application.use(requestLogger())
-application.use(userSession())
-application.use(jsonBodyParser())
-application.use(crossOrigin({ origins: "*" }))
+        // use middlewares
+        this.use(requestLogger())
+        this.use(userSession())
+        this.use(jsonBodyParser())
+        this.use(crossOrigin({ origins: "*" }))
 
-// use endpoints
-application.use("/auth", auth)
-application.use("/person", person)
-application.use("/event", event)
-application.use("/eventVisit", eventVisit)
-application.use("/eventNotify", eventNotify)
-application.use("/calendar", calendar)
-application.use("/tag", tag)
+        // use endpoints
+        this.use("/auth", auth)
+        this.use("/person", person)
+        this.use("/event", event)
+        this.use("/eventVisit", eventVisit)
+        this.use("/eventNotify", eventNotify)
+        this.use("/calendar", calendar)
+        this.use("/tag", tag)
 
-// main error catcher
-application.app.use(errorCatcher(()=> logger))
+        // main error catcher
+        this.app.use(errorCatcher(()=> this.logger))
 
-application.start = function() {
-    let port = Number(process.env.WEBAPI_PORT)
-    logger.log(`Server starting...`)
-    this.listen(port)
-    logger.log(`Server is listening to port ${port}`)
+        // listen to port
+        let port = Number(process.env.WEBAPI_PORT)
+        this.logger.log(`Server starting...`)
+        this.listen(port)
+        this.logger.log(`Server is listening to port ${port}`)
+    }
 }
 
 export { 
-    application
+    EventsWebApi
 }

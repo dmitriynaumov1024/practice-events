@@ -1,13 +1,7 @@
 import { Router } from "better-express"
-import { hash, randomHash, offsetDate } from "better-obj"
+import { hash, offsetDate } from "better-obj"
 
-const sessionTTL = 3600000
-const sessionPasswordLength = 128
-
-function isAlive(session) {
-    // allow it to live for another sessionTTL/2 ms after it expired 
-    return session.expiresAt && (new Date().valueOf() - session.expiresAt.valueOf() <= sessionTTL / 2)
-}
+import { UserSession } from "models"
 
 async function login (request, response) {
     let { db, logger, user } = request
@@ -23,8 +17,8 @@ async function login (request, response) {
     if (person?.password == hash(request.body.password)) {
         let session = await db.userSession.query().insert({
             personId: person.id,
-            password: randomHash(sessionPasswordLength),
-            expiresAt: offsetDate(sessionTTL)
+            password: UserSession.randomPassword(),
+            expiresAt: offsetDate(UserSession.TTL)
         })
         return response.status(200).json({
             person: {
@@ -58,9 +52,9 @@ async function login (request, response) {
 async function refresh (request, response) {
     let { db, logger, user } = request
     let session = user
-    if (isAlive(session) && session.personId) {
-        session.password = randomHash(sessionPasswordLength)
-        session.expiresAt = offsetDate(sessionTTL)
+    if (session.isAlive && session.personId) {
+        session.password = UserSession.randomPassword()
+        session.expiresAt = offsetDate(UserSession.TTL)
         await db.userSession.query()
             .where("id", session.sessionId)
             .patch({ password: session.password, expiresAt: session.expiresAt })

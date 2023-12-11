@@ -1,3 +1,3 @@
-import { application } from "webapi"
+import { EventsWebApi } from "webapi"
 
-application.start()
+await new EventsWebApi().start()
