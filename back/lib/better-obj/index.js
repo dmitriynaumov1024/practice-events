@@ -7,4 +7,4 @@ export { constraint, fk, pk, cascade, restrict, increment, unique, regex, min, m
 export { belongsToOne, hasOne, hasMany } from "./relation.js"
 export { Model } from "./model.js"
 export { DbAdapter, createDbAdapter } from "./database.js"
-export { paginate, hash, randomHash, offsetDate } from "./utils.js"
+export { paginate, count, hash, randomHash, offsetDate, clamp, inRange } from "./utils.js"
