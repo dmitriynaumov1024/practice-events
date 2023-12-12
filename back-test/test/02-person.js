@@ -24,8 +24,8 @@ describe ("Person API", ()=> {
     it ("create person", async ()=> {
         await sleep(350)
         global.creds2 = {
-            email: "ivanov@example.com",
-            password: "!!!Helloworld!@#"
+            email: "ivanov1268@example.com",
+            password: "123456789asdfghjkl"
         }
         let result = await ax.request({
             method: "post",
@@ -53,9 +53,9 @@ describe ("Person API", ()=> {
                 password: global.creds2.password 
             }
         })
-        person = result.data.person
-        auth = qs.stringify(result.data.session)
         expect(result.status).to.equal(200)
+        person = result.data.person
+        auth = result.data.session
     })
 
     it ("view person", async ()=> {
@@ -64,7 +64,7 @@ describe ("Person API", ()=> {
             method: "get",
             url: "/person/view",
             headers: {
-                "Authorization": auth
+                "Authorization": qs.stringify(auth)
             },
             params: {
                 id: person.id
@@ -76,13 +76,13 @@ describe ("Person API", ()=> {
 
     it ("update person", async ()=> {
         await sleep(300)
-        global.creds2.oldPassword = global.creds2.password
-        global.creds2.password = "1234567890123"
+        // global.creds2.oldPassword = global.creds2.password
+        // global.creds2.password = "1234567890123"
         let result = await ax.request({
             method: "post",
             url: "/person/update",
             headers: {
-                "Authorization": auth
+                "Authorization": qs.stringify(auth)
             },
             params: {
                 id: person.id 
@@ -92,9 +92,7 @@ describe ("Person API", ()=> {
                     name: person.name,
                     biography: "Someone Someone",
                     isPublic: person.isPublic,
-                    oldPassword: global.creds2.oldPassword,
-                    password: global.creds2.password,
-                    tags: [ ]
+                    tags: [ "online" ]
                 }
             }
         })
