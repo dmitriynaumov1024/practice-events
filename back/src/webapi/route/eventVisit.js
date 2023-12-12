@@ -9,7 +9,7 @@ async function view (request, response) {
     let personId = Number(query.person) || 0
     
     let eventVisit = await db.eventVisit.query()
-        .withGraphJoined("event, person")
+        .withGraphJoined("[event, person]")
         .where("eventId", eventId)
         .where("personId", personId)
         .first()
@@ -57,6 +57,7 @@ async function view (request, response) {
 
 async function list (request, response) {
     let { db, logger, user, query } = request
+    let page = Number(query.page) || 1
     let eventId = Number(query.event) || 0
     let personId = Number(query.person) || 0
     let approved = query.approved? (query.approved == "true") : null
@@ -73,8 +74,7 @@ async function list (request, response) {
     }
 
     let visits = db.eventVisit.query()
-        .joinRelated("event")
-        .joinRelated("person")
+        .withGraphJoined("[event, person]")
 
     if (eventId) visits = visits.where("eventId", eventId).where("event.ownerId", user.personId)
     if (personId) visits = visits.where("personId", personId)
@@ -99,10 +99,7 @@ async function list (request, response) {
             isPublic: item.person.isPublic
         }
     }
-    return response.status(200).json({
-        items: items.map(item => { item.event = { id: item.event.id } }),
-        success: true
-    })
+    return response.status(200).json(items)
 }
 
 async function create (request, response) {
@@ -173,7 +170,7 @@ async function update (request, response) {
     }
 
     let eventVisit = await db.eventVisit.query()
-        .joinRelated("event")
+        .withGraphJoined("event")
         .where("eventId", input.eventId)
         .where("personId", input.personId)
         .first()
@@ -224,14 +221,14 @@ async function update (request, response) {
 
 async function remove (request, response) {
     let { db, logger, user, query } = request
-    let eventId = Number(query.eventId) || 0
-    let personId = Number(query.personId) || 0
+    let eventId = Number(query.event) || 0
+    let personId = Number(query.person) || 0
     
     if (!eventId || !personId) {
         return response.status(400).json({
             success: false,
             badRequest: true,
-            badFields: [ "eventId", "personId" ]
+            badFields: [ "event", "person" ]
         })
     }
     if (personId != user.personId) {

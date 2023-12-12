@@ -1,5 +1,5 @@
 import { Router } from "better-express"
-import { paginate } from "better-obj"
+import { paginate, clamp } from "better-obj"
 
 const pageSize = 10
 
@@ -17,7 +17,7 @@ async function view (request, response) {
     }
 
     let notification = await db.eventNotification.query()
-        .joinRelated("event")
+        .withGraphJoined("event")
         .where("eventId", eventId)
         .where("personId", personId)
         .first()
@@ -58,22 +58,24 @@ async function list (request, response) {
     }
 
     let notifications = db.eventNotification.query()
-        .joinRelated("event")
+        .withGraphJoined("event")
         .where("personId", personId)
     
     if (archive) notifications = notifications.where("event.endsAt", "<", new Date())
     if (!archive) notifications = notifications.where("event.endsAt", ">=", new Date())
 
     let items = await paginate(page, pageSize, ()=> notifications)
-    return response.status(200).json(items.items.map(item => {
-        item.event = {
-            id: item.event.id,
-            title: item.event.title,
-            startsAt: item.event.startsAt,
-            endsAt: item.event.endsAt
+
+    for (let notification of items.items) {
+        notification.event = {
+            id: notification.event.id,
+            title: notification.event.title,
+            startsAt: notification.event.startsAt,
+            endsAt: notification.event.endsAt
         }
-        return item
-    }))
+    }
+
+    return response.status(200).json(items)
 }
 
 async function create (request, response) {
@@ -97,7 +99,7 @@ async function create (request, response) {
     }
 
     let event = await db.event.query()
-        .select("id, title, startsAt, endsAt")
+        .select("id", "title", "startsAt", "endsAt")
         .where("id", input.eventId).first()
     if (!event) {
         return response.status(404).json({
@@ -112,9 +114,9 @@ async function create (request, response) {
             eventId: input.eventId,
             personId: input.personId,
             createdAt: new Date(),
-            notifyAt: new Date(input.notifyAt),
-            attempts: Math.max(input.attempts, 1),
-            interval: input.interval,
+            notifyAt: clamp(new Date(input.notifyAt), new Date(), event.endsAt),
+            attempts: clamp(input.attempts, 1, 99),
+            interval: clamp(input.interval, 60000, 86400000),
             isSuccess: false
         })
         notification.event = event
@@ -154,7 +156,7 @@ async function update (request, response) {
     }
 
     let notification = await db.eventNotification.query()
-        .joinRelated("event")
+        .withGraphJoined("event")
         .where("eventId", input.eventId)
         .where("personId", input.personId)
         .first()
@@ -167,7 +169,7 @@ async function update (request, response) {
         })
     }
 
-    notification.notifyAt = clamp(input.notifyAt, new Date(), notification.event.endsAt)
+    notification.notifyAt = clamp(new Date(input.notifyAt), new Date(), notification.event.endsAt)
     notification.attempts = clamp(input.attempts, 1, 99)
     notification.interval = clamp(input.interval, 60000, 86400000)
 
@@ -201,14 +203,14 @@ async function update (request, response) {
 
 async function remove (request, response) {
     let { db, logger, user, query } = request
-    let eventId = Number(query.eventId) || 0
-    let personId = Number(query.personId) || 0
+    let eventId = Number(query.event) || 0
+    let personId = Number(query.person) || 0
     
     if (!eventId || !personId) {
         return response.status(400).json({
             success: false,
             badRequest: true,
-            badFields: [ "eventId", "personId" ]
+            badFields: [ "event", "person" ]
         })
     }
     if (personId != user.personId) {

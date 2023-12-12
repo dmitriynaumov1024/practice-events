@@ -54,7 +54,7 @@ async function list (request, response) {
     let events = db.event.query()
         .select("id", "ownerId", "title", "isPublic", "startsAt", "endsAt")
         
-    if (tag) events = events.joinRelated("tags").where("tags.tag", tag)
+    if (tag) events = events.withGraphJoined("tags").where("tags.tag", tag)
     if (ownerId) events = events.where("ownerId", ownerId)
     if (archive) events = events.where("endsAt", "<", offsetDate(0))
     if (!archive) events = events.where("endsAt", ">=", offsetDate(0))
