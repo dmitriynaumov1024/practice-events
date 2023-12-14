@@ -32,6 +32,13 @@ function offsetDate (...args) {
     }
 }
 
+function ymdToDate (year, month, day) {
+    year = String(year).padStart(4, "0")
+    month = String(month).padStart(2, "0")
+    day = String(day).padStart(2, "0")
+    return new Date(`${year}-${month}-${day}T00:00:00`)
+}
+
 function inRange (number, min, max) {
     return number >= min && number <= max
 }
@@ -47,6 +54,7 @@ export {
     hash,
     randomHash,
     offsetDate,
+    ymdToDate,
     inRange,
     clamp
 }

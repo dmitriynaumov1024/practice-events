@@ -1,6 +1,8 @@
 import { Router } from "better-express"
 import { raw } from "objection"
 import { paginate } from "better-obj"
+import { ymdToDate } from "better-obj"
+import { Calendar } from "models"
 
 const pageSize = 10
 
@@ -12,6 +14,7 @@ async function monthSummary (request, response) {
     let { db, query } = request
     let year = Number(request.query.year)
     let month = Number(request.query.month)
+    let tag = query.tag?.toLowerCase()
     if (!inRange(year, 2000, 9999) || !inRange(month, 1, 12)) {
         return response.status(400).json({
             success: false,
@@ -19,14 +22,23 @@ async function monthSummary (request, response) {
             badFields: [ "year", "month" ]
         })
     }
-    let monthStart = new Date(`${year}-${month}-01`).valueOf() / 86400000
+    let monthStart = Calendar.dayOf(ymdToDate(year, month, 1))
     let monthEnd = monthStart + 31
-    let summary = await db.event.query()
-        .select("calendarDay", raw("count(1)").as("count"))
-        .where("calendarDay", ">=", monthStart)
-        .where("calendarDay", "<", monthEnd)
-        .groupBy("calendarDay")
-        .orderBy("calendarDay")
+
+    let summary = db.event.query()
+
+    if (tag) {
+        summary = summary.select("calendarDay", raw("count(1)").as("count"))
+                         .joinRelated("tags").where("tags.tag", tag)
+    }
+    else {
+        summary = summary.select("calendarDay", raw("count(1)").as("count"))
+    }
+
+    summary = await summary.where("calendarDay", ">=", monthStart)
+                           .where("calendarDay", "<", monthEnd)
+                           .groupBy("calendarDay")
+                           .orderBy("calendarDay")
 
     summary = summary.map(item => ({
         date: new Date(item.calendarDay * 86400000),
@@ -42,7 +54,10 @@ async function monthSummary (request, response) {
 
 async function daySummary (request, response) {
     let { db, query } = request
-    let day = new Date(query.date).valueOf() / 86400000
+    let day = Calendar.dayOf(new Date(request.query.date))
+    let tag = query.tag?.toLowerCase()
+    let page = Number(query.page) || 1
+
     if (Number.isNaN(day)) {
         return response.status(400).json({
             success: false,
@@ -50,16 +65,13 @@ async function daySummary (request, response) {
             badFields: [ "date" ]
         })
     }
-    let tag = query.tag || "all"
-    let page = Number(query.page) || 1
-    let events = db.event.query()
-        .withGraphJoined("tags")
-        .where("calendarDay", day)
-        .orderBy("startsAt")
-
+    
+    let events = db.event.query().select("id", "title", "startsAt", "endsAt")
+    if (tag) events = events.joinRelated("tags").where("tags.tag", tag)
+    events = events.where("calendarDay", day).orderBy("startsAt")
     let items = await paginate(page, pageSize, ()=> events)
-
-    response.status(200).json(items)
+    
+    return response.status(200).json(items)
 }
 
 let route = new Router()

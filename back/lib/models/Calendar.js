@@ -17,4 +17,12 @@ export class Calendar extends Model
             }
         }
     }
+
+    static today () {
+        return this.dayOf(new Date()) 
+    }
+
+    static dayOf (date) {
+        return Math.floor(date.valueOf() / 86400000)
+    }
 }

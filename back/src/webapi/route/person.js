@@ -45,7 +45,7 @@ async function list (request, response) {
         .orderBy("id", "desc")
 
     let items = await paginate(page, pageSize, ()=> persons)
-    items = items.map(item => {
+    items.items = items.items.map(item => {
         item.password = null
         if (item.isPublic) return item
         else return {
