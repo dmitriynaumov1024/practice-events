@@ -1,0 +1,17 @@
+Simplified auth logic for development purposes only:
+- using request header Authorization: personId={personId}
+- logged-in user always sends url encoded session info in Authorization header
+
+Real auth logic:
+- using request header Authorization: sessionId={sessionId}&password={password}
+- sessionId: Integer
+- password: String, up to 512 characters
+- user session is created on /auth/login, return session info
+- user session is refreshed on /auth/refresh, return session info
+- user session is terminated on /auth/logout
+- logged-in user always sends url encoded session info in Authorization header
+- sometimes server returns json-encoded session info in response body
+- session is never used to determine context e.g. get list of events owned 
+  by person 
+- session is used to prove that person has the right to access resources 
+  specified by query parameters

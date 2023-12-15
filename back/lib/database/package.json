@@ -1,0 +1,13 @@
+{
+    "name": "database",
+    "author": "Dmitriy Naumov",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "main": "index.js",
+    "dependencies": {
+        "better-obj": "file:lib/better-obj",
+        "models": "file:lib/models",
+        "knex": "^3.0.1"
+    }
+}
