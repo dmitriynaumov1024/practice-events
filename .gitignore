@@ -1,0 +1,10 @@
+node_modules/
+bin/
+obj/
+dist/
+log/
+logs/
+.vscode/
+package-lock.json
+.env
+.env.prod
