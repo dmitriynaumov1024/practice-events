@@ -10,6 +10,11 @@ async function paginate (page, size, queryFunc) {
     }
 }
 
+async function count (queryFunc) {
+    let result = await (queryFunc().count())
+    return result.count || 0
+}
+
 function hash (source) {
     return crypto.createHash("blake2b512")
         .update(source)
@@ -51,6 +56,7 @@ function clamp (number, min, max) {
 
 export {
     paginate,
+    count,
     hash,
     randomHash,
     offsetDate,
