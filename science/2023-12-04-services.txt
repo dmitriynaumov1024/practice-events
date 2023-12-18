@@ -1,0 +1,20 @@
+WebAPI
+
+Services:
+- service: Logger (lib/logging)
+- service: Events Db Adapter (lib/database)
+
+Application:
+- provider: Logger provider
+- provider: Db provider
+- middleware: JSON body parser (express) 
+- middleware: Request logger
+- middleware: User session
+- routes:
+  - /auth
+  - /person
+  - /event
+  - /eventVisit
+  - /eventNotify
+  - /calendar
+  - /tag

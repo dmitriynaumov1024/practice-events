@@ -1,0 +1,69 @@
+Data model
+
+[1][P] Person
++ id: Int32                 // Primary key
++ email: String             // Unique index
++ name: String              // Name (Surname, etc)
++ biography: String         // Short biography
++ isPublic: Boolean         // if their biography and visits are visible
++ password: String          // Password hash
++ createdAt: DateTime       // When signed up
+
+[2][1:M] PersonTag
++ personId: Int32           // Primary&Foreign key (Person.id)
++ tag: String               // Primary key 
+
+[3][1:M] UserSession
++ id: Int32                 // Primary key
++ personId: Int32           // Foreign key (Person.id)
++ password: String          // Random password
++ expiresAt: DateTime       // When should be refreshed?
+
+[4][1:M] Event 
++ id: Int32                 // Primary key
++ ownerId: Int32            // Foreign key (Person.id)
++ calendarDay: Int32        // Foreign key (Calendar.day), when starts
++ title: String             // Name of this event
++ description: String       // Description of this event
++ requirements: String      // Visitor requirements
++ location: String          // Where? Real world address or URL
++ isPublic: Boolean         // Indicates if everyone is welcome
++ createdAt: DateTime       // When created
++ startsAt: DateTime        // When starts
++ endsAt: DateTime          // When ends
+
+[5][1:M] EventTag
++ eventId: Int32            // Primary&Foreign key (Event.id)
++ tag: String               // Primary key
+
+[6][M:M] EventVisit
++ eventId: Int32            // Primary&Foreign key (Event.id)
++ personId: Int32           // Primary&Foreign key (Person.id)
++ motivation: String        // Describe why person should be let in
++ createdAt: DateTime       // When submitted
++ isApproved: Boolean       // Is it approved by event host/owner?
++ isVisited: Boolean        // Was it actually visited?
+
+[7][M:M] EventNotification
++ eventId: Int32            // Primary&Foreign key (Event.id)
++ personId: Int32           // Primary&Foreign key (Person.id)
++ createdAt: DateTime       // When created
++ notifyAt: DateTime        // When to notify
++ interval: Int32           // How many ms to wait before next attempt
++ attempts: Int32           // How many notification attempts?
++ isSuccess: Boolean        // Are we done with notifications?
+
+[8][P] Calendar
++ day: Int32                // Primary key, day since 1970-01-01 
+
+-------------------------------------------------------------------------------
+
+Relations
+
+[1 Person : M Session] One Person has many Sessions
+[1 Person : M Event] One Person hosts many Events
+[M Person : M Event] Many Persons visit many Events
+[M Person : M Event] Many Persons have many Event notifications
+[1 Event : M EventTag] One Event has many Event tags
+[1 Person : M PersonTag] One Person is interested in many Tags
+[M Event: 1 Calendar] Many Events start on one calendar day  

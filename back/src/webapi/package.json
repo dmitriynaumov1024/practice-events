@@ -1,0 +1,16 @@
+{
+    "name": "webapi",
+    "author": "Dmitriy Naumov",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "main": "index.js",
+    "dependencies": {
+        "dotenv": "^16.3.1",
+        "better-express": "file:lib/better-express",
+        "better-obj": "file:lib/better-obj",
+        "models": "file:lib/models",
+        "database": "file:lib/database",
+        "logging": "file:lib/logging"
+    }
+}
