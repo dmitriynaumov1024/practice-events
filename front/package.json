@@ -1,0 +1,20 @@
+{
+  "name": "events-frontend",
+  "version": "0.1.0",
+  "author": "Dmitriy Naumov",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 5000 --host",
+    "build": "vite build --mode prod"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "qs": "^6.11.2",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.3",
+    "vite": "^3.0.9"
+  }
+}
