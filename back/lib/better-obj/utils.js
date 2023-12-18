@@ -37,6 +37,30 @@ function offsetDate (...args) {
     }
 }
 
+function diffDate (date1, date2) {
+    // not like difference of 2 numbers, but more like vector length
+    // how much ms we have to spend to reach date 2 from date 1
+    if (! date1 instanceof Date) date1 = new Date(date1)
+    if (! date2 instanceof Date) date2 = new Date(date2)
+    return date2.valueOf() - date1.valueOf()
+}
+
+function formatDiffDate (diff) {
+    let s = Math.floor(Math.abs(diff / 1000))
+    let m = Math.floor(s / 60)
+    let h = Math.floor(m / 60)
+    let d = Math.floor(h / 24)
+    let interval = `${d} days, ${h%24} hours, ${m%60} minutes`
+    if (diff < 0) return interval + " ago"
+    else return "in " + interval
+}
+
+function formatDateTime(date) {
+    if (!(date instanceof Date)) date = new Date(date)
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth()+1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")} `
+         + `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`
+}
+
 function ymdToDate (year, month, day) {
     year = String(year).padStart(4, "0")
     month = String(month).padStart(2, "0")
@@ -60,6 +84,9 @@ export {
     hash,
     randomHash,
     offsetDate,
+    diffDate,
+    formatDiffDate,
+    formatDateTime,
     ymdToDate,
     inRange,
     clamp
