@@ -70,3 +70,17 @@ cd back
 npm run drop-db
 ```
 
+**frontend (setup)**
+
+```bash
+cd front
+npm install
+```
+
+**frontend (dev server)**
+
+```bash
+cd front
+npm run dev
+# open http://localhost:5000 in your browser
+```
