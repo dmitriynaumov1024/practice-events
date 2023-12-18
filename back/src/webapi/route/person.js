@@ -29,7 +29,8 @@ async function view (request, response) {
     return response.status(200).json({
         person: {
             id: person.id,
-            email: person.email
+            email: person.email,
+            createdAt: person.createdAt
         },
         success: true,
         message: "Not public"
@@ -42,17 +43,16 @@ async function list (request, response) {
     let page = Number(request.query.page) || 1
 
     let persons = db.person.query()
+        .select("id", "email", "name", "biography", "isPublic", "createdAt")
         .orderBy("id", "desc")
 
     let items = await paginate(page, pageSize, ()=> persons)
     items.items = items.items.map(item => {
-        item.password = null
-        if (item.isPublic) return item
-        else return {
+        return (item.isPublic) ? item : ({
             id: item.id,
             email: item.email,
             createdAt: item.createdAt
-        }
+        })
     })
 
     return response.status(200).json(items)

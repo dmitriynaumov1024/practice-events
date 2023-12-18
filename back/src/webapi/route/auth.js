@@ -80,6 +80,14 @@ async function refresh (request, response) {
 
 async function logout (request, response) {
     let { db, logger, user } = request
+    if (!user.sessionId) {
+        return response.status(401).json({
+            unauthorized: true,
+            success: false,
+            message: "Unauthorized"
+        })
+    }
+
     let deleted = await db.userSession.query().delete()
         .where("id", user.sessionId)
         .where("password", user.password)

@@ -28,7 +28,7 @@ export class UserSession extends Model
     }
 
     static get TTL () {
-        return 3600000
+        return 36000000 // 10 hours
     }
 
     static get passwordLength () {

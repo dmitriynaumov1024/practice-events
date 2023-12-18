@@ -7,8 +7,8 @@ async function view (request, response) {
     let { user, db, logger, query } = request
     let id = Number(query.id) 
     let event = await db.event.query()
-        .withGraphJoined("tags")
-        .where("id", id)
+        .withGraphJoined("[owner, tags]")
+        .where("Event.id", id)
         .first()
     
     if (!event) {
@@ -54,7 +54,7 @@ async function list (request, response) {
     let events = db.event.query()
         .select("id", "ownerId", "title", "isPublic", "startsAt", "endsAt")
         
-    if (tag) events = events.withGraphJoined("tags").where("tags.tag", tag)
+    if (tag) events = events.joinRelated("tags").where("tags.tag", tag)
     if (ownerId) events = events.where("ownerId", ownerId)
     if (archive) events = events.where("endsAt", "<", offsetDate(0))
     if (!archive) events = events.where("endsAt", ">=", offsetDate(0))
@@ -82,7 +82,8 @@ async function create (request, response) {
         isPublic: input.isPublic,
         createdAt: new Date(),
         startsAt: new Date(input.startsAt),
-        endsAt: new Date(input.endsAt)
+        endsAt: new Date(input.endsAt),
+        calendarDay: db.calendar.dayOf(new Date(input.startsAt)) || null
     }
     try {
         newEvent = await db.event.query().insert(newEvent)
@@ -167,6 +168,7 @@ async function update (request, response) {
     event.isPublic = input.isPublic
     event.startsAt = new Date(input.startsAt)
     event.endsAt = new Date(input.endsAt)
+    event.calendarDay = db.calendar.dayOf(event.startsAt) || null
     event.tags = input.tags
 
     try {

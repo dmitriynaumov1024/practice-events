@@ -12,7 +12,7 @@ async function paginate (page, size, queryFunc) {
 
 async function count (queryFunc) {
     let result = await (queryFunc().count())
-    return result.count || 0
+    return result[0].count
 }
 
 function hash (source) {

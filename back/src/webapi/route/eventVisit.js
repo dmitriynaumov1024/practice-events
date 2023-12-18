@@ -31,10 +31,12 @@ async function view (request, response) {
 
     eventVisit.event = {
         id: eventVisit.event.id,
+        ownerId: eventVisit.event.ownerId,
         title: eventVisit.event.title,
-        startsAt: eventVisit.startsAt,
-        endsAt: eventVisit.endsAt,
-        isPublic: eventVisit.event.isPublic
+        startsAt: eventVisit.event.startsAt,
+        endsAt: eventVisit.event.endsAt,
+        isPublic: eventVisit.event.isPublic,
+        location: (eventVisit.isApproved || eventVisit.event.ownerId == personId)? eventVisit.event.location : null
     }
 
     let canSee = eventVisit.personId == personId || 
@@ -182,15 +184,18 @@ async function update (request, response) {
         })
     }
 
-    if (input.personId == user.personId) {
+    let isVisitor = input.personId == user.personId
+    let isOwner = eventVisit.event.ownerId == user.personId
+    
+    if (isVisitor) {
         eventVisit.motivation = input.motivation || ""
         if (input.isVisited != null) eventVisit.isVisited = input.isVisited
     }
-    else if (input.event.ownerId == user.personId) {
+    if (isOwner) {
         if (input.isApproved != null) eventVisit.isApproved = input.isApproved
         if (input.isVisited != null) eventVisit.isVisited = input.isVisited
     }
-    else {
+    if (!isVisitor && !isOwner) {
         return response.status(401).json({
             success: false,
             unauthorized: true
