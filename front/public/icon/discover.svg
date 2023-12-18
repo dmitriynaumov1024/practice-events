@@ -1,0 +1,22 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" viewBox="0 0 100 60">
+  <g fill="none" stroke="#44eeff" transform="translate(4.5, -0.7)">
+    <circle stroke-width="3.5" cx="48" cy="27" r="15" />
+    <line stroke-width="4" stroke-linecap="round" 
+      x1="59" x2="69" y1="38" y2="48" />
+  </g>
+  <g stroke="#999999" opacity="0.5" stroke-width="3.5" fill="none" transform="translate(7, 0)">
+    <line stroke-linecap="round" 
+      x1="17" x2="44" y1="24" y2="24" />
+    <line stroke-linecap="round" 
+      x1="15" x2="42" y1="37" y2="37" />
+    <line stroke-linecap="round" 
+      x1="18" x2="25" y1="45" y2="15" />
+    <line stroke-linecap="round" 
+      x1="34" x2="41" y1="45" y2="15" />
+  </g>
+  <g fill="none" stroke="#3344cc" transform="translate(6, 0)">
+    <circle stroke-width="3.5" cx="48" cy="27" r="15" />
+    <line stroke-width="4" stroke-linecap="round" 
+      x1="59" x2="69" y1="38" y2="48" />
+  </g>
+</svg>
