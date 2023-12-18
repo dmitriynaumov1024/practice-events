@@ -115,8 +115,14 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding-top: 8rem;
+  padding-top: 4rem;
   background-color: rgba(0, 0, 0, 0.07);
+}
+
+@media screen and (min-width: 760px) {
+  .modal-wrapper {
+    padding-top: 7rem;
+  }
 }
 
 .modal-window {

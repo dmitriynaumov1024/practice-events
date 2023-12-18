@@ -1,6 +1,8 @@
 import { h } from "vue"
 import { RouterLink, RouterView } from "vue-router"
 
+import WelcomeModal from "@/comp/WelcomeModal.js"
+
 export default {
     render() {
         return [
@@ -19,7 +21,8 @@ export default {
             h("main", {  }, [
                 h("div", { class: [ "width-container", "pad-1" ] }, [
                     h(RouterView)
-                ])
+                ]),
+                h(WelcomeModal)
             ]),
             h("footer", { class: [ "footer", "pad-1" ] }, [
                 h("div", { class: [ "width-container", "pad-1" ] }, [

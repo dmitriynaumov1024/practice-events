@@ -29,6 +29,9 @@ export default class VueApplication
             onRefresh: (session) => {
                 this.axios.axios.setAuth(session)
                 this.storage.storage.session = session
+                if (!session) {
+                    this.storage.storage.person = undefined
+                }
             }
         })
         this.timer = timerProvider({
