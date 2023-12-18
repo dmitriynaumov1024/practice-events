@@ -1,0 +1,67 @@
+Pages
+
+/index.js - main page                                       50% done
+
+/tags/index.js - tags list                                  100% done
+
+/calendar/index.js - calendar                               100% done
+
+/event/list.js - event list                                 100% done
+/event/view.js - event view                                 100% done 
+/event/edit.js - event edit                       90% done (datetime input)  
+
+/profile/signup.js - sign up                                100% done
+/profile/login.js - log in                                  100% done
+/profile/view.js - view my profile                          100% done
+/profile/edit.js - edit my profile                          100% done       
+
+/visit/list.js - list visits                                100% done
+/visit/view.js - view a visit                               100% done
+/visit/edit.js - edit a visit                               100% done
+
+/notification/list.js - list notifications                  100% done
+/notification/view.js - view notification                   100% done
+/notification/edit.js - edit notification                   100% done
+
+
+Fillables
+
+profile login: 
+- email
+- password
+
+profile signup:
+- email
+- name
+- password 
+
+profile edit: 
+- name
+- biography
+- oldPassword
+- password
+- tags[]
+
+event edit:
+- title
+- description
+- requirements
+- location
+- isPublic
+- startsAt
+- endsAt
+- tags[]
+
+visit edit (visitor): 
+- motivation
+- isVisited
+
+visit edit (event owner): 
+- isVisited
+- isApproved
+
+notification edit:
+- notifyAt
+- attempts
+- interval
+
