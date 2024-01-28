@@ -52,14 +52,14 @@
   }
 }
 
-.flex-row {
+.flex-row.flex-row {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
 }
 
-.flex-stripe {
+.flex-stripe.flex-stripe.flex-stripe {
   display: flex;
   flex-direction: row;
   align-items: center;

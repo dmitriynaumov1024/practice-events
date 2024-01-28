@@ -37,6 +37,8 @@ const daysOfWeek = [
 ]
 
 function getDaysIn (year, month) {
+    year = Number(year)
+    month = Number(month)
     if (month == 2) {
         if (year % 400 == 0) return 29;
         else if (year % 100 == 0) return 28;
@@ -50,15 +52,29 @@ function dayOfWeekOf (date) {
     return (date.getDay() + 6) % 7
 }
 
-function ymdToDate (year, month, day) {
-    year = String(year).padStart(4, "0")
-    month = String(month).padStart(2, "0")
-    day = String(day).padStart(2, "0")
-    return new Date(`${year}-${month}-${day}`)
+function ymdToDate (year, month, day, hour, minute) {
+    year = clamp(year, 0, 9999)
+    month = clamp(month, 1, 12)
+    day = clamp(day, 1, getDaysIn(month - 1))
+    hour = clamp(hour, 0, 23)
+    minute = clamp(minute, 0, 59)
+    let yearS = String(year).padStart(4, "0")
+    let monthS = String(month).padStart(2, "0")
+    let dayS = String(day).padStart(2, "0")
+    let hourS = String(hour).padStart(2, "0")
+    let minuteS = String(minute).padStart(2, "0")
+    return new Date(`${yearS}-${monthS}-${dayS}T${hourS}:${minuteS}:00`)
 }
 
 function calendarDayOf (date) {
     return Math.floor(date.valueOf() / 86400000)
+}
+
+function clamp (value, min, max) {
+    value = Number.parseInt(value)
+    if (Number.isNaN(value) || value < min) return min
+    if (value > max) return max
+    return value
 }
 
 export {

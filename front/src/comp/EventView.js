@@ -41,7 +41,7 @@ export default {
                 h("p", { class: [ "text-gray", "mar-b-05" ] }, "Description"),
                 h("p", { class: [ "text-pre-wrap", "mar-b-1" ] }, event.description)
             ]),
-            h("div", { class: [ "card" ] }, [
+            h("div", { class: [ "card", "mar-b-1" ] }, [
                 h("p", { class: [ "text-gray", "mar-b-05" ] }, "Requirements"),
                 h("p", { class: [ "text-pre-wrap", "mar-b-1" ] }, event.requirements)
             ]),

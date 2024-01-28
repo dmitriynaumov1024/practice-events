@@ -12,7 +12,9 @@ input {
 }
 
 .fancy-input>input, 
+.fancy-input>.input,
 .fancy-textarea>textarea {
+  background-color: var(--color-back-0);
   display: block;
   width: 100%;
   padding: 0.25rem 0.375rem;
@@ -63,7 +65,6 @@ input[type="checkbox"]:checked+label {
   border: 2px solid var(--color-back-3); 
   margin-right: 0.5rem;
   background-color: var(--color-back-0);
-  /*border-radius: 2px;*/
 }
 
 .fancy-checkbox-label,
@@ -82,75 +83,12 @@ input[type="checkbox"]:checked+label {
 
 .fancy-group>main>* {
   margin: 0.25rem auto;
+}  
+
+.fancy-group>main {
+  border: 2px solid var(--color-back-2);
+  padding: 0.25rem 0.375rem 0.125rem;
 }
-
-/*
-@media screen and (max-width: 759px)
-{
-  .fancy-group>main {
-    border: 2px solid var(--color-back-2);
-    padding: 0.25rem 0.375rem 0.125rem;
-  }
-}
-
-@media screen and (min-width: 760px) 
-{
-  .fancy-input>label {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .fancy-input>input {
-    padding: 0.25rem 1rem 0.25rem 46.3%;
-    background-image: linear-gradient(to right, 
-      var(--color-back-1) 0%, 
-      var(--color-back-1) 45%, 
-      var(--color-back-0) 45%, 
-      var(--color-back-0) 100%
-    );
-    transition: border 0.2s;
-  }
-
-  .fancy-textarea>label {
-    position: absolute;
-    top: 2px;
-    z-index: 2;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .fancy-textarea>textarea {
-    padding: 2.25rem 0.375rem 0.25rem;
-    background-image: linear-gradient(to bottom, 
-      var(--color-back-1) 0%, 
-      var(--color-back-1) 100%
-    );
-    background-position: top;
-    background-size: 100% 2rem;
-    background-repeat: no-repeat;
-    transition: border 0.2s;
-  }
-
-  .fancy-group {
-    border: 2px solid var(--color-back-2);
-    background-color: var(--color-back-0);
-    background-image: linear-gradient(to bottom, 
-      var(--color-back-1) 0%, 
-      var(--color-back-1) 100%
-    );
-    background-position: top;
-    background-size: 100% 2rem;
-    background-repeat: no-repeat;
-    padding: 0.25rem 0.375rem 0.125rem;
-  }
-
-  .fancy-group>header {
-    margin: 0 0rem 0.5rem;
-  }
-}
-*/
 
 .notification-input>textarea {
   height: 8rem;
@@ -164,6 +102,20 @@ input.inline-input {
   border: none;
   border-top: 2px solid transparent;
   border-bottom: var(--border);
+  line-height: inherit;
+  font-family: inherit;
+  color: inherit;
+  font-size: 1rem;
+  text-align: inherit;
+  padding: 0px 0;
+}
+
+input.super-inline {
+  display: inline-block;
+  min-width: 0.5rem;
+  outline: none;
+  border-radius: 0;
+  border: none;
   line-height: inherit;
   font-family: inherit;
   color: inherit;

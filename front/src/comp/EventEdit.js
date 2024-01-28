@@ -1,6 +1,7 @@
 import { h } from "vue"
 
 import InputBox from "@/ctrl/InputBox.js"
+import DateTimeBox from "@/ctrl/DateTimeBox.js"
 import TextBox from "@/ctrl/TextBox.js"
 import ToggleButton from "@/ctrl/ToggleButton.js"
 
@@ -17,10 +18,10 @@ export default {
             h(InputBox, { value: event.tags, onUpdate: (value)=> event.tags = value }, {
                 label: ()=> "Event tags (separated with whitespace)"
             }),
-            h(InputBox, { value: event.startsAt, onUpdate: (value)=> event.startsAt = value }, {
+            h(DateTimeBox, { value: event.startsAt, onUpdate: (value)=> event.startsAt = value }, {
                 label: ()=> "Event starts at"
             }),
-            h(InputBox, { value: event.endsAt, onUpdate: (value)=> event.endsAt = value }, {
+            h(DateTimeBox, { value: event.endsAt, onUpdate: (value)=> event.endsAt = value }, {
                 label: ()=> "Event ends at"
             }),
             h(InputBox, { value: event.location, onUpdate: (value)=> event.location = value }, {
