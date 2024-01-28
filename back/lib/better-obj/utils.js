@@ -61,21 +61,33 @@ function formatDateTime(date) {
          + `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`
 }
 
-function ymdToDate (year, month, day) {
-    year = String(year).padStart(4, "0")
-    month = String(month).padStart(2, "0")
-    day = String(day).padStart(2, "0")
-    return new Date(`${year}-${month}-${day}T00:00:00`)
+const daysInMonth = [
+    31, 28, 31, 30, 31, 30,
+    31, 31, 30, 31, 30, 31 
+]
+
+function ymdToDate (year, month, day, hour, minute) {
+    year = clamp(year, 0, 9999) | 0
+    month = clamp(month, 1, 12) | 0
+    day = clamp(day, 1, daysInMonth[month - 1]) | 0
+    hour = clamp(hour, 0, 23) | 0
+    minute = clamp(minute, 0, 59) | 0
+    let yearS = String(year).padStart(4, "0")
+    let monthS = String(month).padStart(2, "0")
+    let dayS = String(day).padStart(2, "0")
+    let hourS = String(hour).padStart(2, "0")
+    let minuteS = String(minute).padStart(2, "0")
+    return new Date(`${yearS}-${monthS}-${dayS}T${hourS}:${minuteS}:00`)
 }
 
 function inRange (number, min, max) {
     return number >= min && number <= max
 }
 
-function clamp (number, min, max) {
-    if (number > max) return max
-    else if (number < min) return min
-    else return number
+function clamp (value, min, max) {
+    if (value < min) return min
+    else if (value > max) return max
+    else return value
 }
 
 export {
